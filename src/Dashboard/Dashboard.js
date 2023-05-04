@@ -3,8 +3,8 @@ import Rows2 from './Rows/Rows2'
 const Dashboard = (props) => {
     return(
         <main>
-        <Rows1 date = {props.date} temp={props.temp} wind={props.wind}/>
-        <Rows2 />
+        <Rows1 date = {props.date} temp={props.temp} wind={props.wind} setCurrDate={props.setCurrDate}/>
+        <Rows2 data = {props.data}/>
       </main>
     )
 }

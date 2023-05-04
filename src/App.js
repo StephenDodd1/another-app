@@ -1,26 +1,38 @@
 import './App.css';
 import Header from './Header/Header'
 import Dashboard from './Dashboard/Dashboard'
-import { useState } from 'react';
-function App() {
-  console.log('state change')
-  const getDayOfWeek = ['Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-  const currDate = new Date().getDay()
+import { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+function App() {  
+  const [currDate, setCurrDate] = useState(new Date().getDay())
   const [temp, setTemp] = useState(999)
   const [wind, setWind] = useState(999)
-  const date = getDayOfWeek[currDate]
   const [val,setVal] = useState(1)
-  fetch('https://api.openweathermap.org/data/2.5/weather?'
+  const [data, setData] = useState([{
+    exercise_name: 'None'
+  }])
+  let value=0
+  useEffect(() => {
+    fetch('https://api.openweathermap.org/data/2.5/weather?'
     +`lat=${46}&lon=${104}&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`)
     .then(res=>res.json()).then(data=>{
       setTemp(Math.round(data.main.temp - 273))
       setWind(data.wind.gust)
     })
+    fetch('http://localhost:3000/activity/all-activities')
+    .then(res=>res.json())
+    .then(data=>{
+      setData([...data])
+    })
 
+  },[currDate])
+
+  console.log(data)
+  value += 1
   return (
     <div className="App">
       <Header/>
-      <Dashboard date = {date} wind={wind} temp={temp}/>
+      <Dashboard date = {currDate} wind={wind} temp={temp} setCurrDate={setCurrDate} data = {data}/>
     </div>
   );
 }
