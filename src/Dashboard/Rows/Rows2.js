@@ -8,7 +8,7 @@ const Rows2 = (data) => {
                 {data.data?.map((row,i) => {
                     return(
                     <div className={i%2 ? "exercise-row bg-gray" : "exercise-row bg-white"}>
-                        <div>{row.exercise_name}</div>
+                        <div>{row.exercise_name[0].toUpperCase() + row.exercise_name.slice(1)}</div>
                         <ExerciseRows {...row} />
                     </div>
                     )}
